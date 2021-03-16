@@ -1,2 +1,1 @@
-# DS_3D
-threeJS logic game for DS
+gierka logiczna do DS rozumiesz o co hcodzi narazie nie mamy pomyslu ale kiedys bbedziemy mieli
