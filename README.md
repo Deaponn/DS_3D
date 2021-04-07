@@ -8,7 +8,7 @@ Autorzy: Bartosz Sajecki & Jakub Ciszewski
 ==============================================================================
 This game allows you to feel like average ZSŁ student on profile IT technician
 Server: Express or NodeJS (to determine)
-Client: ThreeJS
+Client: ThreeJS, JQuery
 Data Base: NedB
 Hosting: Heroku.com
 Authors: Bartosh Sajecki & Jakub Cishewski
