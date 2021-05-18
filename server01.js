@@ -1,9 +1,9 @@
-var http = require("http");
-var server = http.createServer(function (req, res) {
-    // parametr res oznacza obiekt odpowiedzi serwera (response)
-    // parametr req oznacza obiekt żądania klienta (request)
+const express = require('express')
+const app = express()
+const server = require('http').createServer(app)
+const io = require('socket.io')(server, {
+    cors: { origin: "*" }
 })
-
-server.listen(3000, function () {
-    console.log("serwer startuje na porcie 3000")
-});
+server.listen(3000, () => {
+    console.log('server running at port 3000')
+})
