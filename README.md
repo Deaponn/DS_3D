@@ -1,5 +1,5 @@
 Gra pozwala wcielić się w typowego ucznia ZSŁ na profilu technik informatyk.
-Serwer: Express lub NodeJS (do ustaleniia)
+Serwer: Express
 Klient: ThreeJS
 Baza danych: NedB
 Hosting: Heroku.com
