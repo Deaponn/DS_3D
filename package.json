@@ -1,0 +1,25 @@
+{
+  "name": "DS_3D",
+  "version": "1.0.0",
+  "description": "Gra pozwala wcielić się w typowego ucznia ZSŁ na profilu technik informatyk.\r Serwer: Express\r Klient: ThreeJS\r Baza danych: NedB\r Hosting: Heroku.com\r Autorzy: Bartosz Sajecki & Jakub Ciszewski",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/domino644/DS_3D.git"
+  },
+  "keywords": [],
+  "author": "Sajecki&Ciszewski",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/domino644/DS_3D/issues"
+  },
+  "homepage": "https://github.com/domino644/DS_3D#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "nedb": "^1.8.0",
+    "socket.io": "^4.1.2"
+  }
+}
