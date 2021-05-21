@@ -11,6 +11,7 @@ var levels = new Datastore({
     autoload: true
 })
 
+app.use(express.static("static"))
 
 server.listen(3000, () => {
     console.log('server running at port 3000')
