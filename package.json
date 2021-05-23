@@ -4,7 +4,8 @@
   "description": "Gra pozwala wcielić się w typowego ucznia ZSŁ na profilu technik informatyk.\r Serwer: Express\r Klient: ThreeJS\r Baza danych: NedB\r Hosting: Heroku.com\r Autorzy: Bartosz Sajecki & Jakub Ciszewski",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ./server.js"
   },
   "repository": {
     "type": "git",
