@@ -13,7 +13,7 @@ export default class WallManagement {
 
     createLight(x, z) {
         let fireplace = new Fireplace()
-        let newLight = new PointLight("0xf0f0f0")
+        let newLight = new PointLight("0xf0f0f0", 0.5)
         let container = new Object3D()
         newLight.shadow.mapSize.width = 1024;
         newLight.shadow.mapSize.height = 1024;

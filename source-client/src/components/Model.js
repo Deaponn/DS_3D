@@ -1,6 +1,5 @@
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader.js';
 import { AnimationMixer } from "three"
-import marioTex from "./assets/rust.jpg"
 
 export default class Model {
     constructor(scene, manager) {
@@ -10,7 +9,7 @@ export default class Model {
         this.geometry = null
     }
 
-    load(path, animationList, returnMixer) {
+    load(path, returnData, ...animationList) {
         // Manager is passed in to loader to determine when loading done in main
         // Load model with FBXLoader
         this.loader = new FBXLoader(this.manager)
@@ -19,14 +18,12 @@ export default class Model {
             geometry => {
                 this.geometry = geometry;
                 this.scene.add(this.geometry);
-                console.log(this.geometry) // tu powinny być widoczne animacje
+                //console.log(this.geometry) // tu powinny być widoczne animacje
                 // console.log(this.mesh)
-                this.geometry.scale.set(5, 5, 5)
                 this.mixer = new AnimationMixer(this.geometry);
-
                 this.loadAnimations(animationList)
 
-                returnMixer(this.mixer)
+                returnData(this.geometry, this.mixer)
             },
         );
     }
@@ -35,9 +32,9 @@ export default class Model {
         for (let i = 0; i < list.length; i++) {
             let animation = await this.loadAnimation(list[i])
             this.geometry.animations.push(animation)
-            console.log(this.geometry)
+            //console.log(this.geometry)
         }
-        const action = this.mixer.clipAction(this.geometry.animations[0]);
+        const action = this.mixer.clipAction(this.geometry.animations[3]);
         action.play();
     }
 
@@ -47,7 +44,7 @@ export default class Model {
                 name,
                 object => {
                     let animation = object.animations[0]
-                    console.log(animation)
+                    //console.log(animation)
                     resolve(animation)
                 }
             )

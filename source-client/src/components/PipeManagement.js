@@ -16,8 +16,8 @@ export default class Model extends Object3D {
         let testState = {
             config: {
                 scale: 2,               // ustala jakiej wielkosci elementy beda na ekranie
-                startingPointX: 400,    // ustala od jakiego koordynatu X zacznie sie generowanie
-                startingPointY: 600,    // ustala od jakiego koordynatu Y zacznie sie generowanie
+                startingPointX: 600,    // ustala od jakiego koordynatu X zacznie sie generowanie
+                startingPointY: 450,    // ustala od jakiego koordynatu Y zacznie sie generowanie
                 width: 6,               // podaje ile mniejszych tablic bedzie wystepowalo w poziomie
                 height: 4               // podaje ile wiekszych tablic bedzie wystepowalo w poziomie
             },                          // generowanie poziomu zaczyna sie od lewego gornego rogu i idzie w dol, a nastepnie
