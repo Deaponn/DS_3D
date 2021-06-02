@@ -15,142 +15,102 @@ export default class Model extends Object3D {
         //tutaj zapytanie do serwera o obecny stan planszy, w callbacku wywolana funkcja
         let testState = {
             config: {
-                scale: 2,               // ustala jakiej wielkosci elementy beda na ekranie
-                startingPointX: 600,    // ustala od jakiego koordynatu X zacznie sie generowanie
-                startingPointY: 450,    // ustala od jakiego koordynatu Y zacznie sie generowanie
-                width: 6,               // podaje ile mniejszych tablic bedzie wystepowalo w poziomie
+                playerColor: 0,     // ustala kolor gracza, 0 to czerwony, 1 to zielony
+                scale: 2.9,               // ustala jakiej wielkosci elementy beda na ekranie
+                positionX: 400,    // ustala pozycje X kontenera
+                positionY: 200,    // ustala pozycje Y kontenera
+                positionZ: 80,     // ustala pozycje Z kontenera
+                rotation: -0.2,         // ustala obrot kontenera
+                width: 4,               // podaje ile mniejszych tablic bedzie wystepowalo w poziomie
                 height: 4               // podaje ile wiekszych tablic bedzie wystepowalo w poziomie
-            },                          // generowanie poziomu zaczyna sie od lewego gornego rogu i idzie w dol, a nastepnie
-            state: [                    // przechodzi do kolejnej kolumny
+            },                          // generowanie poziomu zaczyna sie od lewego dolnego rogu i idzie w prawo, a nastepnie
+            state: [                    // przechodzi do kolejnego wiersza
                 [                       // height to ilosc tablic zawierajacych tablice z obiektami, a width to ilosc obiektow w mniejszych tablicach
                     {
                         type: "exit",   // typ elementu na planszy
-                        rotation: 0,    // jego obrot, dla 0 wlot u gory
+                        rotation: 3,    // jego obrot, dla 0 wlot u gory
                         active: false   // wiadomosc czy jest juz zasilony przez strumien wody
                     },
                     {
-                        type: "line",   // exit, line, elbow, cross, tee, input
-                        rotation: 0,    // 0, 1, 2, 3 - dla cross nie jest brane pod uwage, dla line 0 i 2 oraz 1 i 3 wygladaja tak samo
+                        type: "elbow",   // exit, line, elbow, cross, tee, input, w przypadku jesli input nalezy podac dodatkowo base: <type inny niz input>
+                        rotation: 1,    // 0, 1, 2, 3 - dla cross nie jest brane pod uwage, dla line 0 i 2 oraz 1 i 3 wygladaja tak samo
                         active: false   // true lub false, na razie dziala tylko z type exit
                     },
                     {
-                        type: "elbow",
-                        rotation: 0,
+                        type: "exit",
+                        rotation: 2,
                         active: false
                     },
                     {
-                        type: "cross",
-                        rotation: 0,
+                        type: "exit",
+                        rotation: 2,
+                        active: false
+                    }
+                ],
+                [
+                    {
+                        type: "tee",
+                        rotation: 1,
                         active: false
                     },
                     {
                         type: "tee",
-                        rotation: 0,
+                        rotation: 3,
                         active: false
                     },
                     {
-                        type: "input",
-                        base: "line",
-                        rotation: 0,
+                        type: "tee",
+                        rotation: 1,
+                        active: false
+                    },
+                    {
+                        type: "elbow",
+                        rotation: 3,
                         active: false
                     }
                 ],
                 [
                     {
                         type: "exit",
-                        rotation: 1,
-                        active: false
-                    },
-                    {
-                        type: "line",
-                        rotation: 1,
-                        active: false
-                    },
-                    {
-                        type: "elbow",
-                        rotation: 1,
-                        active: false
-                    },
-                    {
-                        type: "cross",
-                        rotation: 1,
-                        active: false
-                    },
-                    {
-                        type: "tee",
-                        rotation: 1,
-                        active: false
-                    },
-                    {
-                        type: "input",
-                        base: "elbow",
                         rotation: 0,
                         active: false
-                    }
-                ],
-                [
+                    },
                     {
                         type: "exit",
-                        rotation: 2,
-                        active: true
-                    },
-                    {
-                        type: "line",
-                        rotation: 2,
-                        active: false
-                    },
-                    {
-                        type: "elbow",
-                        rotation: 2,
-                        active: false
-                    },
-                    {
-                        type: "cross",
-                        rotation: 2,
-                        active: false
-                    },
-                    {
-                        type: "tee",
-                        rotation: 2,
-                        active: false
-                    },
-                    {
-                        type: "input",
-                        base: "cross",
                         rotation: 0,
-                        active: false
-                    }
-                ],
-                [
-                    {
-                        type: "exit",
-                        rotation: 3,
-                        active: true
-                    },
-                    {
-                        type: "line",
-                        rotation: 3,
-                        active: false
-                    },
-                    {
-                        type: "elbow",
-                        rotation: 3,
-                        active: false
-                    },
-                    {
-                        type: "cross",
-                        rotation: 3,
-                        active: false
-                    },
-                    {
-                        type: "tee",
-                        rotation: 3,
                         active: false
                     },
                     {
                         type: "input",
                         base: "tee",
-                        rotation: 0,
+                        rotation: 1,
+                        active: true
+                    },
+                    {
+                        type: "elbow",
+                        rotation: 3,
+                        active: true
+                    }
+                ],
+                [
+                    {
+                        type: "exit",
+                        rotation: 2,
+                        active: false
+                    },
+                    {
+                        type: "tee",
+                        rotation: 3,
+                        active: true
+                    },
+                    {
+                        type: "elbow",
+                        rotation: 3,
+                        active: true
+                    },
+                    {
+                        type: "exit",
+                        rotation: 1,
                         active: false
                     }
                 ]
@@ -161,23 +121,27 @@ export default class Model extends Object3D {
     }
 
     constructSpace(data, mesh) {
-        let startingX = data.config.startingPointX
-        let startingY = data.config.startingPointY
-        let scale = data.config.scale
-        let spacing = 66.5 * scale
+        // this.position.set(data.config.positionX, data.config.positionY, data.config.positionZ)
+        // this.rotation = data.config.rotation
+        // this.scale = data.config.scale
+        console.log(this, data.config.positionX, data.config.positionY, data.config.positionZ, data.config.rotation, data.config.scale)
+        let spacing = 66.5
         for (let i = 0; i < data.config.width; i++) {
             for (let j = 0; j < data.config.height; j++) {
                 let color = (i + j) % 2
                 let pipe = this.newPipe(mesh, data.state[j][i], color)
-                pipe.position.set(startingX + i * spacing, startingY - j * spacing, 0)
+                pipe.position.set(i * spacing, j * spacing, 0)
                 pipe.rotation.z = Math.PI / 2 * (data.state[j][i].rotation * -1 + 1)
-                pipe.scale.set(scale, scale, scale)
                 data.state[j][i].active ? pipe.userData.active = true : null
-                pipe.userData.scale = scale
+                if (data.config.playerColor == color || data.state[j][i].type == "input") pipe.userData.clickable = true
+                pipe.userData.scale = 1
                 this.add(pipe)
             }
         }
         console.log(this.scene)
+        this.position.set(data.config.positionX, data.config.positionY, data.config.positionZ)
+        this.rotation.y = data.config.rotation
+        this.scale.set(data.config.scale, data.config.scale, data.config.scale)
     }
 
     newPipe(mesh, data, color) {

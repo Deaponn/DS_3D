@@ -34,7 +34,7 @@ export default class Model {
             this.geometry.animations.push(animation)
             //console.log(this.geometry)
         }
-        const action = this.mixer.clipAction(this.geometry.animations[3]);
+        const action = this.mixer.clipAction(this.geometry.animations[2]);
         action.play();
     }
 

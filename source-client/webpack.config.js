@@ -5,7 +5,7 @@ module.exports = {
     output: {
         filename: 'bundle.js'
     },
-    mode: 'production', // none, development, production
+    mode: 'development', // none, development, production
     devServer: {
         port: 8080,
         contentBase: './dist/src'

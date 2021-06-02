@@ -12,12 +12,12 @@ export default class Rotator extends Raycaster {
 
     rotateElement(e) {
         let vector = new Vector2()
-        console.log(window.innerHeight, window.innerWidth)
         vector.x = (e.clientX / window.innerWidth) * 2 - 1;
         vector.y = -(e.clientY / window.innerHeight) * 2 + 1;
         this.setFromCamera(vector, this.camera);
         var intersects = this.intersectObjects(this.scene.children[2].children, true);
         if (intersects.length > 0) {
+            if (!intersects[0].object.userData.clickable && !intersects[0].object.parent.userData.clickable) return
             // tu wysylane zapytanie do serwera o "pozwolenie" na obrot, jesli odpowiedz twierdzaca to wykonuje sie instrukcja ponizej
             intersects[0].object.parent.name == "container" ? this.animateRotation(intersects[0].object.parent) : this.animateRotation(intersects[0].object)
         }
