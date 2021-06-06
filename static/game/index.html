@@ -5,12 +5,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pipes</title>
-    <script defer src="./bundle.js?3bec89a7b40536734424"></script>
+
+    <script defer src="./bundle.js"></script>
+    <script src="../js/start.js" defer></script>
+    <link rel="stylesheet" href="../css/start.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
 </head>
 
 <body>
+    <div id="join-cont">
+        <img src="../gpx/monster.png" alt="cos sie popsulo">
+        <input id="input" type="text" placeholder="Your nick...">
+        <button onclick="log()" id="btn">Join!</button>
+    </div>
     <div id="root"></div>
     <div id="controls"></div>
+    <div id="players">
+        <span id="player1"></span>
+        <span id="player2"></span>
+    </div>
 </body>
 
 </html>

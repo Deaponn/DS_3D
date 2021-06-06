@@ -25,8 +25,11 @@
   },
   "homepage": "https://github.com/domino644/DS_3D#readme",
   "dependencies": {
+    "cookie-parser": "^1.4.5",
     "express": "^4.17.1",
+    "express-session": "^1.17.2",
     "nedb": "^1.8.0",
-    "socket.io": "^4.1.2"
+    "socket.io": "^4.1.2",
+    "underscore": "^1.4.4"
   }
 }
