@@ -70,8 +70,6 @@ export default class Main {
             this.mixer = mixer
         }, "./assets/playing.fbx", "./assets/pre-lose.fbx", "./assets/losing.fbx", "./assets/win.fbx")
 
-        let selector
-
         this.load.load("./assets/room.fbx", (geometry, mixer) => {
             this.room = geometry
             geometry.children[3].children[0].children[0].children[0].children[0].material.shininess = 0.5
@@ -88,56 +86,56 @@ export default class Main {
 
         this.rotator = new Rotator(this.scene, this.camera)
 
-        window.onkeydown = (key) => {
-            console.log(this["room"].children[3].children[0].children[0].children[4].children[0])
-            switch (key.key) {
-                case "w": {
-                    selector.position.x += 0.01
-                    break
-                }
-                case "s": {
-                    selector.position.x -= 0.01
-                    break
-                }
-                case "a": {
-                    selector.position.z -= 0.01
-                    break
-                }
-                case "d": {
-                    selector.position.z += 0.01
-                    break
-                }
-                case "Shift": {
-                    selector.position.y -= 0.01
-                    break
-                }
-                case " ": {
-                    selector.position.y += 0.01
-                    break
-                }
-                case "z": {
-                    selector.rotation.y += 0.01
-                    break
-                }
-                case "x": {
-                    selector.rotation.y -= 0.01
-                    break
-                }
-                case "c": {
-                    selector.scale.x -= 0.1
-                    selector.scale.y -= 0.1
-                    selector.scale.z -= 0.1
-                    break
-                }
-                case "v": {
-                    selector.scale.x += 0.1
-                    selector.scale.y += 0.1
-                    selector.scale.z += 0.1
-                    break
-                }
-            }
-            console.log(selector.position, selector.rotation.y, selector.scale)
-        }
+        // window.onkeydown = (key) => {
+        //     selector = this["room"].children[3].children[0].children[0].children[4].children[0]
+        //     switch (key.key) {
+        //         case "w": {
+        //             selector.position.x += 0.01
+        //             break
+        //         }
+        //         case "s": {
+        //             selector.position.x -= 0.01
+        //             break
+        //         }
+        //         case "a": {
+        //             selector.position.z -= 0.01
+        //             break
+        //         }
+        //         case "d": {
+        //             selector.position.z += 0.01
+        //             break
+        //         }
+        //         case "Shift": {
+        //             selector.position.y -= 0.01
+        //             break
+        //         }
+        //         case " ": {
+        //             selector.position.y += 0.01
+        //             break
+        //         }
+        //         case "z": {
+        //             selector.rotation.y += 0.01
+        //             break
+        //         }
+        //         case "x": {
+        //             selector.rotation.y -= 0.01
+        //             break
+        //         }
+        //         case "c": {
+        //             selector.scale.x -= 0.1
+        //             selector.scale.y -= 0.1
+        //             selector.scale.z -= 0.1
+        //             break
+        //         }
+        //         case "v": {
+        //             selector.scale.x += 0.1
+        //             selector.scale.y += 0.1
+        //             selector.scale.z += 0.1
+        //             break
+        //         }
+        //     }
+        //     console.log(selector.position, selector.rotation.y, selector.scale)
+        // }
 
         let geometry = new PlaneGeometry(176, 102, 1, 1)
         let material = new MeshBasicMaterial()

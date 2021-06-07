@@ -32,8 +32,10 @@ export default class Model {
         for (let i = 0; i < list.length; i++) {
             let animation = await this.loadAnimation(list[i])
             this.geometry.animations.push(animation)
-            //console.log(this.geometry)
         }
+        setTimeout(() => {
+            document.getElementById("loading").style.display = "none"
+        }, 1000)
         const action = this.mixer.clipAction(this.geometry.animations[2]);
         action.play();
     }
