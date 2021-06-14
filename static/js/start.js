@@ -7,7 +7,17 @@ const joinCont = document.getElementById('join-cont')
 const players = document.getElementById('players')
 const player1 = document.getElementById('player1')
 const player2 = document.getElementById('player2')
+const audio = document.getElementById('audio')
 
+audio.setAttribute("src", "../audio/lobby.wav")
+audio.loop = true
+audio.play()
+
+function lobbyPlay() {
+    audio.setAttribute("src", "../audio/lobby.wav")
+    audio.loop = true
+    audio.play()
+}
 
 function log() {
     if (input.value.trim().length > 20) {

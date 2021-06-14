@@ -7,10 +7,14 @@ const Datastore = require('nedb')
 const path = require('path')
 var counter = 1
 
-// var levels = new Datastore({
-//     filename: './database/levels.db',
-//     autoload: true
-// })
+var levels = new Datastore({
+    filename: './database/levels.db',
+    autoload: true
+})
+// let level = {
+//     level:[{"config":{"scale":2.9,"positionX":400,"positionY":200,"positionZ":80,"rotation":-0.2,"width":4,"height":4},"state":[[{"type":"elbow","rotation":1,"active":false},{"type":"tee","rotation":1,"active":false},{"type":"elbow","rotation":1,"active":true},{"type":"exit","rotation":1,"active":false}],[{"type":"exit","rotation":2,"active":false},{"type":"exit","rotation":0,"active":false},{"type":"tee","rotation":2,"active":true},{"type":"tee","rotation":3,"active":false}],[{"type":"exit","rotation":0,"active":false},{"type":"tee","rotation":1,"active":false},{"type":"input","base":"tee","rotation":0,"active":true},{"type":"exit","rotation":1,"active":false}],[{"type":"exit","rotation":2,"active":false},{"type":"elbow","rotation":1,"active":false},{"type":"elbow","rotation":0,"active":true},{"type":"exit","rotation":1,"active":false}]]},{"config":{"scale":2.9,"positionX":400,"positionY":200,"positionZ":80,"rotation":-0.2,"width":4,"height":4},"state":[[{"type":"exit","rotation":3,"active":false},{"type":"elbow","rotation":1,"active":false},{"type":"exit","rotation":2,"active":false},{"type":"exit","rotation":2,"active":false}],[{"type":"tee","rotation":1,"active":false},{"type":"tee","rotation":3,"active":false},{"type":"tee","rotation":1,"active":false},{"type":"elbow","rotation":3,"active":false}],[{"type":"exit","rotation":0,"active":false},{"type":"exit","rotation":0,"active":false},{"type":"input","base":"tee","rotation":1,"active":true},{"type":"elbow","rotation":3,"active":true}],[{"type":"exit","rotation":2,"active":false},{"type":"tee","rotation":3,"active":true},{"type":"elbow","rotation":3,"active":true},{"type":"exit","rotation":1,"active":false}]]}]
+// }
+// levels.insert(level)
 var players = new Datastore({
     filename: './database/players.db',
     autoload: true
@@ -28,14 +32,14 @@ server.listen(3000, () => {
 })
 
 io.on('connection', (socket) => {
-    console.log('connection', Object.keys(Object.fromEntries(io.sockets.adapter.rooms)).length, Object.keys(Object.fromEntries(io.sockets.adapter.rooms)), socket.id)
     socket.on('join', (nick) => {
         if (io.sockets.adapter.rooms.get('room' + counter) == undefined) {
             socket.join('room' + counter)
             let player = {
                 id: socket.id,
                 nick: nick,
-                room: 'room' + counter
+                room: 'room' + counter,
+                color: 'red'
             }
             players.insert(player)
         } else if (io.sockets.adapter.rooms.get('room' + counter).size == 1) {
@@ -43,23 +47,31 @@ io.on('connection', (socket) => {
             let player = {
                 id: socket.id,
                 nick: nick,
-                room: 'room' + counter
+                room: 'room' + counter,
+                color: 'green'
             }
             players.insert(player)
+            io.to('room'+counter).emit("startGame")
             counter++
         }
     })
     socket.on('disconnect', () => {
-        players.remove({ id: socket.id }, {})
+        players.remove({
+            id: socket.id
+        }, {})
         console.log('player disconnected', socket.id)
     })
     socket.on('getPlayers', () => {
         console.log('getplayers')
         let tab = []
         let room = ''
-        players.findOne({ id: socket.id }, (err, doc) => {
+        players.findOne({
+            id: socket.id
+        }, (err, doc) => {
             room = doc.room
-            players.find({ room: room }, (err, doc2) => {
+            players.find({
+                room: room
+            }, (err, doc2) => {
                 for (let nick of doc2) {
                     tab.push(nick.nick)
                 }
@@ -69,3 +81,4 @@ io.on('connection', (socket) => {
         })
     })
 })
+

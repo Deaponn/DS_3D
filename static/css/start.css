@@ -168,3 +168,6 @@ div{
     animation-name: onOff;
     animation-direction: reverse;
   }
+  #audio{
+    display: none;
+  }
