@@ -102,5 +102,10 @@ io.on('connection', (socket) => {
             })
         })
     })
+    socket.on('win', () => {
+        players.findOne({ id: socket.id }, (err, doc) => {
+            io.to(doc.room).emit('win')
+        })
+    })
 })
 

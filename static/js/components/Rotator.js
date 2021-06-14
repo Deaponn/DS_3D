@@ -66,6 +66,6 @@ export default class Rotator extends Raycaster {
     }
     checkForWin() {
         console.log(this.levelData.state, this.levelData.solved, JSON.stringify(this.levelData.state) == JSON.stringify(this.levelData.solved))
-        if (JSON.stringify(this.levelData.state) == JSON.stringify(this.levelData.solved)) console.log("won")
+        if (JSON.stringify(this.levelData.state) == JSON.stringify(this.levelData.solved)) document.socket.emit("win")
     }
 }
