@@ -10,7 +10,6 @@ export default class Rotator extends Raycaster {
         this.levelData = levelData
 
         document.socket.on("rotation", (data) => {
-            console.log(this.levelData.state[data.cords.y][data.cords.x])
             if (this.levelData.state[data.cords.y][data.cords.x].rotation == 3) { this.levelData.state[data.cords.y][data.cords.x].rotation = 0 }
             else { this.levelData.state[data.cords.y][data.cords.x].rotation++ }
             this.animateRotation(this.pipeList[data.cords.x][data.cords.y])
@@ -32,7 +31,6 @@ export default class Rotator extends Raycaster {
             intersects[0].object.parent.name == "container" ? userData = intersects[0].object.parent.userData : userData = intersects[0].object.userData
             document.socket.emit("rotation", userData)
             this.animateRotation(intersects[0].object)
-            console.log(this.levelData.state[userData.cords.y][userData.cords.x])
             if (this.levelData.state[userData.cords.y][userData.cords.x].rotation == 3) { this.levelData.state[userData.cords.y][userData.cords.x].rotation = 0 }
             else { this.levelData.state[userData.cords.y][userData.cords.x].rotation++ }
             this.checkForWin()
@@ -65,7 +63,6 @@ export default class Rotator extends Raycaster {
         }
     }
     checkForWin() {
-        console.log(this.levelData.state, this.levelData.solved, JSON.stringify(this.levelData.state) == JSON.stringify(this.levelData.solved))
         if (JSON.stringify(this.levelData.state) == JSON.stringify(this.levelData.solved)) document.socket.emit("win")
     }
 }

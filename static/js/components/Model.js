@@ -7,11 +7,6 @@ export default class Model {
         this.mesh = null;
         this.manager = manager;
         this.geometry = null
-
-        document.socket.on("rotation", () => {
-            this.mixer.existingAction(this.animName).paused = true
-            this.mixer.existingAction(this.animName).fadeOut(0.5)
-        })
     }
 
     load(path, returnData, ...animationList) {
@@ -44,7 +39,8 @@ export default class Model {
         }, 1000)
         console.log("teraz")
         console.log(document.socket)
-        const action = this.mixer.clipAction(this.geometry.animations[1]);
+        console.log(this.geometry)
+        const action = this.mixer.clipAction(this.geometry.animations[2]);
         action.play();
     }
 
