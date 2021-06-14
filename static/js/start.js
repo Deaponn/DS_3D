@@ -1,4 +1,5 @@
-var socket = io.connect("ws://localhost:3000")
+document.socket = io.connect("ws://localhost:3000")
+var socket = document.socket
 const input = document.getElementById('input')
 const btn = document.getElementById('btn')
 const root = document.getElementById('root')
