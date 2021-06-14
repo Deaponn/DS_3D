@@ -1,11 +1,21 @@
 import { Raycaster, Vector2 } from '../three/build/three.module.js';
 
 export default class Rotator extends Raycaster {
-    constructor(scene, camera) {
+    constructor(scene, camera, pipeList, levelData) {
 
         super()
         this.scene = scene
         this.camera = camera
+        this.pipeList = pipeList
+        this.levelData = levelData
+
+        document.socket.on("rotation", (data) => {
+            console.log(this.levelData.state[data.cords.y][data.cords.x])
+            if (this.levelData.state[data.cords.y][data.cords.x].rotation == 3) { this.levelData.state[data.cords.y][data.cords.x].rotation = 0 }
+            else { this.levelData.state[data.cords.y][data.cords.x].rotation++ }
+            this.animateRotation(this.pipeList[data.cords.x][data.cords.y])
+            this.checkForWin()
+        })
 
         window.addEventListener('mousedown', (e) => this.rotateElement(e));
     }
@@ -18,12 +28,20 @@ export default class Rotator extends Raycaster {
         var intersects = this.intersectObjects(this.scene.children[2].children, true);
         if (intersects.length > 0) {
             if (!intersects[0].object.userData.clickable && !intersects[0].object.parent.userData.clickable) return
-            // tu wysylane zapytanie do serwera o "pozwolenie" na obrot, jesli odpowiedz twierdzaca to wykonuje sie instrukcja ponizej
-            intersects[0].object.parent.name == "container" ? this.animateRotation(intersects[0].object.parent) : this.animateRotation(intersects[0].object)
+            let userData
+            intersects[0].object.parent.name == "container" ? userData = intersects[0].object.parent.userData : userData = intersects[0].object.userData
+            document.socket.emit("rotation", userData)
+            this.animateRotation(intersects[0].object)
+            console.log(this.levelData.state[userData.cords.y][userData.cords.x])
+            if (this.levelData.state[userData.cords.y][userData.cords.x].rotation == 3) { this.levelData.state[userData.cords.y][userData.cords.x].rotation = 0 }
+            else { this.levelData.state[userData.cords.y][userData.cords.x].rotation++ }
+            this.checkForWin()
         }
     }
 
-    animateRotation(object, leftToRotate = Math.PI / 2, step = 0.01) {
+    animateRotation(target, leftToRotate = Math.PI / 2, step = 0.01) {
+        let object
+        target.parent.name == "container" ? object = target.parent : object = target
         if (step >= leftToRotate) {
             let scale = object.userData.scale
             object.rotation.z -= leftToRotate
@@ -45,5 +63,9 @@ export default class Rotator extends Raycaster {
                 this.animateRotation(object, newLeftToRotate, newStep)
             }, 10);
         }
+    }
+    checkForWin() {
+        console.log(this.levelData.state, this.levelData.solved, JSON.stringify(this.levelData.state) == JSON.stringify(this.levelData.solved))
+        if (JSON.stringify(this.levelData.state) == JSON.stringify(this.levelData.solved)) console.log("won")
     }
 }

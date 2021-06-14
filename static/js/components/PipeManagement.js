@@ -2,139 +2,44 @@ import { Object3D, MeshPhongMaterial } from '../three/build/three.module.js'
 import Loader from './OBJModel.js'
 
 export default class Model extends Object3D {
-    constructor(scene, manager) {
+    constructor(scene, manager, level) {
         super()
         this.scene = scene;
         this.manager = manager;
+        this.level = level
+        this.pipeList = []
         this.scene.add(this)
         this.loader = new Loader(this.manager, this.scene)
         this.loader.load('./assets/pipecollection.obj', this)
+        document.socket.on("setColor", (color) => {
+            if (color == "red") this.playerColor = 0
+            else this.playerColor = 1
+            this.reloadClickable()
+        })
     }
 
     objectLoaded(mesh) {
         //tutaj zapytanie do serwera o obecny stan planszy, w callbacku wywolana funkcja
-        let testState = {
-            config: {
-                playerColor: 0,     // ustala kolor gracza, 0 to czerwony, 1 to zielony
-                scale: 2.9,               // ustala jakiej wielkosci elementy beda na ekranie
-                positionX: 400,    // ustala pozycje X kontenera
-                positionY: 200,    // ustala pozycje Y kontenera
-                positionZ: 80,     // ustala pozycje Z kontenera
-                rotation: -0.2,         // ustala obrot kontenera
-                width: 4,               // podaje ile mniejszych tablic bedzie wystepowalo w poziomie
-                height: 4               // podaje ile wiekszych tablic bedzie wystepowalo w poziomie
-            },                          // generowanie poziomu zaczyna sie od lewego dolnego rogu i idzie w prawo, a nastepnie
-            state: [                    // przechodzi do kolejnego wiersza
-                [                       // height to ilosc tablic zawierajacych tablice z obiektami, a width to ilosc obiektow w mniejszych tablicach
-                    {
-                        type: "exit",   // typ elementu na planszy
-                        rotation: 3,    // jego obrot, dla 0 wlot u gory
-                        active: false   // wiadomosc czy jest juz zasilony przez strumien wody
-                    },
-                    {
-                        type: "elbow",   // exit, line, elbow, cross, tee, input, w przypadku jesli input nalezy podac dodatkowo base: <type inny niz input>
-                        rotation: 1,    // 0, 1, 2, 3 - dla cross nie jest brane pod uwage, dla line 0 i 2 oraz 1 i 3 wygladaja tak samo
-                        active: false   // true lub false, na razie dziala tylko z type exit
-                    },
-                    {
-                        type: "exit",
-                        rotation: 2,
-                        active: false
-                    },
-                    {
-                        type: "exit",
-                        rotation: 2,
-                        active: false
-                    }
-                ],
-                [
-                    {
-                        type: "tee",
-                        rotation: 1,
-                        active: false
-                    },
-                    {
-                        type: "tee",
-                        rotation: 3,
-                        active: false
-                    },
-                    {
-                        type: "tee",
-                        rotation: 1,
-                        active: false
-                    },
-                    {
-                        type: "elbow",
-                        rotation: 3,
-                        active: false
-                    }
-                ],
-                [
-                    {
-                        type: "exit",
-                        rotation: 0,
-                        active: false
-                    },
-                    {
-                        type: "exit",
-                        rotation: 0,
-                        active: false
-                    },
-                    {
-                        type: "input",
-                        base: "tee",
-                        rotation: 1,
-                        active: true
-                    },
-                    {
-                        type: "elbow",
-                        rotation: 3,
-                        active: true
-                    }
-                ],
-                [
-                    {
-                        type: "exit",
-                        rotation: 2,
-                        active: false
-                    },
-                    {
-                        type: "tee",
-                        rotation: 3,
-                        active: true
-                    },
-                    {
-                        type: "elbow",
-                        rotation: 3,
-                        active: true
-                    },
-                    {
-                        type: "exit",
-                        rotation: 1,
-                        active: false
-                    }
-                ]
-            ]
-        }
-
-        this.constructSpace(testState, mesh)
+        this.constructSpace(this.level, mesh)
     }
 
     constructSpace(data, mesh) {
         // this.position.set(data.config.positionX, data.config.positionY, data.config.positionZ)
         // this.rotation = data.config.rotation
         // this.scale = data.config.scale
-        console.log(this, data.config.positionX, data.config.positionY, data.config.positionZ, data.config.rotation, data.config.scale)
+        this.data = data
         let spacing = 66.5
         for (let i = 0; i < data.config.width; i++) {
+            this.pipeList.push([])
             for (let j = 0; j < data.config.height; j++) {
                 let color = (i + j) % 2
                 let pipe = this.newPipe(mesh, data.state[j][i], color)
                 pipe.position.set(i * spacing, j * spacing, 0)
                 pipe.rotation.z = Math.PI / 2 * (data.state[j][i].rotation * -1 + 1)
                 data.state[j][i].active ? pipe.userData.active = true : null
-                if (data.config.playerColor == color || data.state[j][i].type == "input") pipe.userData.clickable = true
                 pipe.userData.scale = 1
+                pipe.userData.cords = { x: i, y: j }
+                this.pipeList[i].push(pipe)
                 this.add(pipe)
             }
         }
@@ -211,6 +116,16 @@ export default class Model extends Object3D {
                 container.add(base)
                 container.name = "container"
                 return container
+            }
+        }
+    }
+
+    reloadClickable() {
+        console.log(this.pipeList)
+        for (let i = 0; i < this.pipeList.length; i++) {
+            for (let j = 0; j < this.pipeList[i].length; j++) {
+                let color = (i + j) % 2
+                if (this.playerColor == color || this.data.state[j][i].type == "input") this.pipeList[i][j].userData.clickable = true
             }
         }
     }

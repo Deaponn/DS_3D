@@ -24,9 +24,11 @@ import Renderer from './Renderer.js';
 import Rotator from './Rotator.js'
 
 export default class Main {
-    constructor(container) {
+    constructor(container, levelData) {
         // właściwości klasy
         this.container = container;
+        this.levelData = levelData.level[0]
+        console.log(this.levelData)
         this.scene = new Scene();
         this.renderer = new Renderer(container);
         this.camera = new Camera(this.renderer);
@@ -80,10 +82,9 @@ export default class Main {
             // this.room.position.set(700, -900, -1300)
         }, null)
 
-        this.pipes = new PipeManagement(this.scene, this.manager)
-        console.log(this.pipes)
+        this.pipes = new PipeManagement(this.scene, this.manager, this.levelData)
 
-        this.rotator = new Rotator(this.scene, this.camera)
+        this.rotator = new Rotator(this.scene, this.camera, this.pipes.pipeList, this.levelData)
 
         // window.onkeydown = (key) => {
         //     selector = this["room"].children[3].children[0].children[0].children[4].children[0]

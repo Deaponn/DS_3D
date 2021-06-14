@@ -27,6 +27,15 @@ app.get("/", (_req, res) => {
     res.sendFile(path.join(__dirname + '/static/game/index.html'))
 })
 
+app.get('/level', (_req, res) => {
+    levels.findOne({}, (err, doc) => { res.send(doc) })
+})
+
+app.get('/favicon.ico', (_req, res) => {
+    res.type("image/x-icon")
+    res.sendFile(path.join(__dirname + '/favicon.ico'))
+})
+
 server.listen(3000, () => {
     console.info('server running at port 3000')
 })
@@ -42,6 +51,7 @@ io.on('connection', (socket) => {
                 color: 'red'
             }
             players.insert(player)
+            socket.emit('setColor', player.color)
         } else if (io.sockets.adapter.rooms.get('room' + counter).size == 1) {
             socket.join('room' + counter)
             let player = {
@@ -51,7 +61,8 @@ io.on('connection', (socket) => {
                 color: 'green'
             }
             players.insert(player)
-            io.to('room'+counter).emit("startGame")
+            socket.emit('setColor', player.color)
+            io.to('room' + counter).emit("startGame")
             counter++
         }
     })
@@ -77,6 +88,17 @@ io.on('connection', (socket) => {
                 }
                 console.log(room, tab)
                 io.to(room).emit("getPlayers", tab)
+            })
+        })
+    })
+    socket.on('rotation', (userData) => {
+        players.findOne({ id: socket.id }, (err, doc) => {
+            players.find({ room: doc.room }, (err, doc2) => {
+                for (let player of doc2) {
+                    if (player.id != socket.id) {
+                        io.to(player.id).emit('rotation', userData)
+                    }
+                }
             })
         })
     })
