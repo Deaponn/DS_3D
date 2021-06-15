@@ -187,3 +187,32 @@ div{
   #audio{
     display: none;
   }
+  #win-lose{
+    background-image: none;
+    display: none;
+    animation-direction: reverse;
+    animation-name: endAnimation;
+    width: 200px;
+    height: 133px;
+    animation-duration: 1s;
+    position: absolute;
+    z-index: 2;
+    animation-iteration-count: infinite;
+  }
+  @keyframes endAnimation{
+    0% {opacity: 1;}
+    50% {opacity: 0;}
+    100% {opacity: 1;}
+  }
+  #timer{
+    color: #ffff;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    font-family: 'clockFont';
+    display: none;
+  }
+  #timer > span{
+    font-family: 'clockFont';
+    font-size: 5em;
+  }

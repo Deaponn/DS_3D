@@ -9,7 +9,12 @@ const players = document.getElementById('players')
 const player1 = document.getElementById('player1')
 const player2 = document.getElementById('player2')
 const audio = document.getElementById('audio')
-
+const timer = document.getElementById('timer')
+const minutes = document.getElementById('minutes')
+const seconds = document.getElementById('seconds')
+const winLose = document.getElementById('win-lose')
+var time = 90
+var isPlaying = true
 audio.setAttribute("src", "../audio/lobby.wav")
 audio.loop = true
 audio.play()
@@ -30,6 +35,7 @@ function log() {
         root.style.display = 'block'
         controls.style.display = 'block'
         players.style.display = 'flex'
+        timer.style.display = 'block'
         socket.emit('getPlayers')
     }
     else {
@@ -45,4 +51,24 @@ socket.on('getPlayers', (players) => {
     } else {
         player1.innerHTML = players[0] + " &#128721"
     }
+})
+socket.on('win', () => {
+    isPlaying = false
+    winLose.style.backgroundImage = 'url("../gpx/win.png")'
+    winLose.style.display = 'block'
+})
+socket.on('tick', () => {
+    if (isPlaying) {
+        time--
+        minutes.innerHTML = Math.floor(time / 60)
+        if (time % 60 < 10) {
+            seconds.innerHTML = '0' + time % 60
+        } else {
+            seconds.innerHTML = time % 60
+        }
+    }
+})
+socket.on('lost', () => {
+    winLose.style.backgroundImage = 'url("../gpx/lose.png")'
+    winLose.style.display = 'block'
 })

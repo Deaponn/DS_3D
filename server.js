@@ -39,7 +39,18 @@ app.get('/favicon.ico', (_req, res) => {
 server.listen(3000, () => {
     console.info('server running at port 3000')
 })
-
+function clock(room) {
+    let counter = 90
+    let interval = setInterval(() => {
+        if (counter > 0) {
+            io.to(room).emit('tick')
+            counter--
+        } else {
+            io.to(room).emit('lost')
+            clearInterval(interval)
+        }
+    }, 1000)
+}
 io.on('connection', (socket) => {
     socket.on('join', (nick) => {
         if (io.sockets.adapter.rooms.get('room' + counter) == undefined) {
@@ -62,7 +73,7 @@ io.on('connection', (socket) => {
             }
             players.insert(player)
             socket.emit('setColor', player.color)
-            io.to('room' + counter).emit("startGame")
+            clock(player.room)
             counter++
         }
     })
