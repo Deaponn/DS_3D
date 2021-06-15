@@ -1,3 +1,8 @@
+@font-face {
+  font-family: "clockFont";
+  src: url("../fonts/digital-7.ttf");
+}
+
 *{
     padding: 0px;
     margin: 0px;
@@ -46,6 +51,17 @@ input:focus{
     align-items: center;
     justify-content: center;
 }
+
+#clock{
+  position: absolute;
+  top: 65px;
+  left: 65px;
+  color: bisque;
+  display: flex;
+  font-size: 64px;
+  font-family: "clockFont";
+}
+
 img{
     width: 25%;
     margin-bottom: 3%;

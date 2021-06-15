@@ -43,6 +43,7 @@ export default class Model {
             let animation = await this.loadAnimation(list[i])
             this.geometry.animations.push(animation)
         }
+        document.getElementById("loading").style.display = "none"
         this.playingAction = this.mixer.clipAction(this.geometry.animations[0]);
         this.lostAction = this.mixer.clipAction(this.geometry.animations[1]);
         this.winAction = this.mixer.clipAction(this.geometry.animations[2]);
