@@ -6,6 +6,7 @@ const io = socket(server)
 const Datastore = require('nedb')
 const path = require('path')
 var counter = 1
+const PORT = process.env.PORT || 3000
 
 var levels = new Datastore({
     filename: './database/levels.db',
@@ -36,8 +37,8 @@ app.get('/favicon.ico', (_req, res) => {
     res.sendFile(path.join(__dirname + '/favicon.ico'))
 })
 
-server.listen(3000, () => {
-    console.info('server running at port 3000')
+server.listen(PORT, () => {
+    console.info(`server running at port ${PORT}`)
 })
 
 io.on('connection', (socket) => {
