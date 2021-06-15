@@ -69,7 +69,7 @@ export default class Main {
             this.player.rotation.y = -2.9
             this.player.scale.set(2.6, 2.6, 2.6)
             this.mixer = mixer
-        }, "./assets/playing.fbx", "./assets/pre-lose.fbx", "./assets/losing.fbx", "./assets/win.fbx")
+        }, "./assets/playing.fbx", "./assets/losing.fbx", "./assets/win.fbx")
 
         this.load.load("./assets/room.fbx", (geometry, mixer) => {
             this.room = geometry

@@ -7,6 +7,16 @@ export default class Model {
         this.mesh = null;
         this.manager = manager;
         this.geometry = null
+
+        document.socket.on("lost", () => {
+            this.playingAction.fadeOut(1)
+            this.lostAction.play()
+        })
+
+        document.socket.on("win", () => {
+            this.playingAction.fadeOut(1)
+            this.winAction.play()
+        })
     }
 
     load(path, returnData, ...animationList) {
@@ -33,15 +43,10 @@ export default class Model {
             let animation = await this.loadAnimation(list[i])
             this.geometry.animations.push(animation)
         }
-        setTimeout(() => {
-            document.getElementById("loading").style.display = "none"
-            console.log("opoznienie")
-        }, 1000)
-        console.log("teraz")
-        console.log(document.socket)
-        console.log(this.geometry)
-        const action = this.mixer.clipAction(this.geometry.animations[2]);
-        action.play();
+        this.playingAction = this.mixer.clipAction(this.geometry.animations[0]);
+        this.lostAction = this.mixer.clipAction(this.geometry.animations[1]);
+        this.winAction = this.mixer.clipAction(this.geometry.animations[2]);
+        this.playingAction.play()
     }
 
     loadAnimation(name) {
