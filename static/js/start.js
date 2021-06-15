@@ -1,4 +1,4 @@
-document.socket = io.connect("ws://rury-3d-sajecki-ciszewski.herokuapp.com")
+document.socket = io.connect("wss://rury-3d-sajecki-ciszewski.herokuapp.com")
 var socket = document.socket
 const input = document.getElementById('input')
 const btn = document.getElementById('btn')
