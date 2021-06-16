@@ -90,6 +90,10 @@ div{
     word-wrap: break-word;
 }
 
+#monitor1, #monitor2{
+  display: none;
+}
+
 #loading{
     position: absolute;
     display: flex;

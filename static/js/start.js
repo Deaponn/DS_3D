@@ -13,6 +13,8 @@ const timer = document.getElementById('timer')
 const minutes = document.getElementById('minutes')
 const seconds = document.getElementById('seconds')
 const winLose = document.getElementById('win-lose')
+const vid1 = document.getElementById("monitor1")
+const vid2 = document.getElementById("monitor2")
 var time = 90
 var isPlaying = true
 audio.setAttribute("src", "../audio/lobby.wav")
@@ -58,6 +60,8 @@ socket.on('win', () => {
     winLose.style.display = 'block'
 })
 socket.on('tick', () => {
+    vid1.play()
+    vid2.play()
     if (isPlaying) {
         time--
         minutes.innerHTML = Math.floor(time / 60)
@@ -69,6 +73,7 @@ socket.on('tick', () => {
     }
 })
 socket.on('lost', () => {
+    if (!isPlaying) return
     winLose.style.backgroundImage = 'url("../gpx/lose.png")'
     winLose.style.display = 'block'
 })

@@ -7,13 +7,16 @@ export default class Model {
         this.mesh = null;
         this.manager = manager;
         this.geometry = null
+        this.gameEnded = false
 
         document.socket.on("lost", () => {
+            if (this.gameEnded) return
             this.playingAction.fadeOut(1)
             this.lostAction.play()
         })
 
         document.socket.on("win", () => {
+            this.gameEnded = true
             this.playingAction.fadeOut(1)
             this.winAction.play()
         })
