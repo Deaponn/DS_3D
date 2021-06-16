@@ -16,6 +16,17 @@ export default class Model extends Object3D {
             else this.playerColor = 1
             this.reloadClickable()
         })
+        document.socket.on("lost", () => {
+            this.playerColor = 2
+            console.log("lost")
+            this.reloadClickable()
+        })
+
+        document.socket.on("win", () => {
+            this.playerColor = 2
+            console.log("won")
+            this.reloadClickable()
+        })
     }
 
     objectLoaded(mesh) {
@@ -43,7 +54,6 @@ export default class Model extends Object3D {
                 this.add(pipe)
             }
         }
-        console.log(this.scene)
         this.position.set(data.config.positionX, data.config.positionY, data.config.positionZ)
         this.rotation.y = data.config.rotation
         this.scale.set(data.config.scale, data.config.scale, data.config.scale)
@@ -121,7 +131,14 @@ export default class Model extends Object3D {
     }
 
     reloadClickable() {
-        console.log(this.pipeList)
+        if (this.playerColor == 2) {
+            for (let i = 0; i < this.pipeList.length; i++) {
+                for (let j = 0; j < this.pipeList[i].length; j++) {
+                    this.pipeList[i][j].userData.clickable = false
+                }
+            }
+            return
+        }
         for (let i = 0; i < this.pipeList.length; i++) {
             for (let j = 0; j < this.pipeList[i].length; j++) {
                 let color = (i + j) % 2

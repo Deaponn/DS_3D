@@ -7,13 +7,16 @@ export default class Model {
         this.mesh = null;
         this.manager = manager;
         this.geometry = null
+        this.gameEnded = false
 
         document.socket.on("lost", () => {
+            if (this.gameEnded) return
             this.playingAction.fadeOut(1)
             this.lostAction.play()
         })
 
         document.socket.on("win", () => {
+            this.gameEnded = true
             this.playingAction.fadeOut(1)
             this.winAction.play()
         })
@@ -44,9 +47,9 @@ export default class Model {
             this.geometry.animations.push(animation)
         }
         document.getElementById("loading").style.display = "none"
-        this.playingAction = this.mixer.clipAction(this.geometry.animations[0])
-        this.lostAction = this.mixer.clipAction(this.geometry.animations[1])
-        this.winAction = this.mixer.clipAction(this.geometry.animations[2])
+        this.playingAction = this.mixer.clipAction(this.geometry.animations[0]);
+        this.lostAction = this.mixer.clipAction(this.geometry.animations[1]);
+        this.winAction = this.mixer.clipAction(this.geometry.animations[2]);
         this.playingAction.play()
     }
 

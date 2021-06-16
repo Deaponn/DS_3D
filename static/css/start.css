@@ -1,3 +1,8 @@
+@font-face {
+  font-family: "clockFont";
+  src: url("../fonts/digital-7.ttf");
+}
+
 *{
     padding: 0px;
     margin: 0px;
@@ -46,6 +51,17 @@ input:focus{
     align-items: center;
     justify-content: center;
 }
+
+#clock{
+  position: absolute;
+  top: 65px;
+  left: 65px;
+  color: bisque;
+  display: flex;
+  font-size: 64px;
+  font-family: "clockFont";
+}
+
 img{
     width: 25%;
     margin-bottom: 3%;
@@ -72,6 +88,10 @@ div{
 }
 #player1, #player2{
     word-wrap: break-word;
+}
+
+#monitor1, #monitor2{
+  display: none;
 }
 
 #loading{
@@ -170,4 +190,33 @@ div{
   }
   #audio{
     display: none;
+  }
+  #win-lose{
+    background-image: none;
+    display: none;
+    animation-direction: reverse;
+    animation-name: endAnimation;
+    width: 200px;
+    height: 133px;
+    animation-duration: 1s;
+    position: absolute;
+    z-index: 2;
+    animation-iteration-count: infinite;
+  }
+  @keyframes endAnimation{
+    0% {opacity: 1;}
+    50% {opacity: 0;}
+    100% {opacity: 1;}
+  }
+  #timer{
+    color: #ffff;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    font-family: 'clockFont';
+    display: none;
+  }
+  #timer > span{
+    font-family: 'clockFont';
+    font-size: 5em;
   }

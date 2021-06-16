@@ -9,7 +9,9 @@ import {
     DirectionalLight,
     PlaneGeometry,
     MeshBasicMaterial,
-    Mesh
+    Mesh,
+    VideoTexture,
+    TextureLoader
 } from '../three/build/three.module.js';
 import Stats from '../three/examples/jsm/libs/stats.module.js';
 import Animation from "./Animation.js"
@@ -28,7 +30,6 @@ export default class Main {
         // właściwości klasy
         this.container = container;
         this.levelData = levelData.level[0]
-        console.log(this.levelData)
         this.scene = new Scene();
         this.renderer = new Renderer(container);
         this.camera = new Camera(this.renderer);
@@ -86,65 +87,29 @@ export default class Main {
 
         this.rotator = new Rotator(this.scene, this.camera, this.pipes.pipeList, this.levelData)
 
-        // window.onkeydown = (key) => {
-        //     selector = this["room"].children[3].children[0].children[0].children[4].children[0]
-        //     switch (key.key) {
-        //         case "w": {
-        //             selector.position.x += 0.01
-        //             break
-        //         }
-        //         case "s": {
-        //             selector.position.x -= 0.01
-        //             break
-        //         }
-        //         case "a": {
-        //             selector.position.z -= 0.01
-        //             break
-        //         }
-        //         case "d": {
-        //             selector.position.z += 0.01
-        //             break
-        //         }
-        //         case "Shift": {
-        //             selector.position.y -= 0.01
-        //             break
-        //         }
-        //         case " ": {
-        //             selector.position.y += 0.01
-        //             break
-        //         }
-        //         case "z": {
-        //             selector.rotation.y += 0.01
-        //             break
-        //         }
-        //         case "x": {
-        //             selector.rotation.y -= 0.01
-        //             break
-        //         }
-        //         case "c": {
-        //             selector.scale.x -= 0.1
-        //             selector.scale.y -= 0.1
-        //             selector.scale.z -= 0.1
-        //             break
-        //         }
-        //         case "v": {
-        //             selector.scale.x += 0.1
-        //             selector.scale.y += 0.1
-        //             selector.scale.z += 0.1
-        //             break
-        //         }
-        //     }
-        //     console.log(selector.position, selector.rotation.y, selector.scale)
-        // }
+        let posterGeometry = new PlaneGeometry(156, 156, 1, 1)
+        let posterMaterial = new MeshBasicMaterial({ map: new TextureLoader().load('../gpx/jezus.jpg') })
+
+        let poster = new Mesh(posterGeometry, posterMaterial)
+        poster.position.set(70, 560, -440)
+        poster.scale.set(2, 2, 2)
+        this.scene.add(poster)
+
+        const vid1 = document.getElementById("monitor1")
+        const texture = new VideoTexture(vid1)
+
+        const vid2 = document.getElementById("monitor2")
+        const texture2 = new VideoTexture(vid2)
 
         let geometry = new PlaneGeometry(176, 102, 1, 1)
-        let material = new MeshBasicMaterial()
+        let material = new MeshBasicMaterial({ map: texture })
+        let material2 = new MeshBasicMaterial({ map: texture2 })
 
         let monitor = new Mesh(geometry, material)
         monitor.position.set(-44, 377, -367)
         monitor.rotation.y = -0.24
 
-        let monitor2 = new Mesh(geometry, material)
+        let monitor2 = new Mesh(geometry, material2)
         monitor2.position.set(-231, 377, -365)
         monitor2.rotation.y = 0.285
 
