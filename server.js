@@ -42,6 +42,7 @@ server.listen(3000, () => {
 function clock(room) {
     let counter = 90
     let interval = setInterval(() => {
+        console.log(`time goes by... ${counter}`)
         if (counter > 0) {
             io.to(room).emit('tick')
             counter--

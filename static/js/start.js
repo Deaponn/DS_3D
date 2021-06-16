@@ -60,6 +60,7 @@ socket.on('win', () => {
     winLose.style.display = 'block'
 })
 socket.on('tick', () => {
+    console.log(`time goes by... ${time}`)
     vid1.play()
     vid2.play()
     if (isPlaying) {
